@@ -21,7 +21,6 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "audioModem",
     "https://ajax.googleapis.com/"
   ]
 }
