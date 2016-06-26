@@ -96,13 +96,15 @@ if ('webkitSpeechRecognition' in window) {
                 final_transcript = spaceWordArray.join(' ');
                 final_transcript += ' ' + noSpaceWordArray.join('');
                 final_transcript = final_transcript.trim();
-                if (final_transcript == 'okay chrome' || final_transcript == 'ok chrome') {
-                    run = true;
-                } else if (final_transcript == 'goodbye chrome') {
-                    run = false;
-                }
                 if (run) {
                     navigateChrome(final_transcript);
+                }
+                if (final_transcript == 'okay chrome' || final_transcript == 'ok chrome') {
+                    run = true;
+                    alert("It's on!");
+                } else if (final_transcript == 'goodbye chrome') {
+                    run = false;
+                    alert("It's off!");
                 }
             } else {
                 interim_transcript += event.results[i][0].transcript;
