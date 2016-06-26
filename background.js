@@ -30,29 +30,28 @@ var final_transcript = '';
 var interim_transcript = '';
 var recognizing = false;
 var ignore_onend;
+var run = false;
 
 function navigateChrome(text) {
     var words = text.split(' ');
-    if ('open' in words && 'new' in words) {
-        if ('tab' in words) {
-
-        } else if ('window' in words) {
-
-        }
-    } else if (words.indexOf('go') >= 0 && words.indexOf('to') == words.indexOf('go') + 1) {
+    if (words.indexOf('go') >= 0 && words.indexOf('to') == words.indexOf('go') + 1) {
         window.open('http://' + words[words.indexOf('to') + 1]);
+    } else if (words.indexOf('search') >= 0 && words.indexOf('for') == words.indexOf('search') + 1) {
+        window.open('https://www.google.ca/search?q=' + words.slice(2).join('+'));
     } else if (words.indexOf('down') >= 0) {
         down();
+    } else if (words.indexOf('up') >= 0) {
+        up();
     }
 }
 
 function down() {
-    console.log(1);
-    window.scrollBy(0,300);
-    console.log(2);
+    window.scrollBy(0,500);
 }
 
-down();
+function up() {
+    window.scrollBy(0,-500);
+}
 
 if ('webkitSpeechRecognition' in window) {
     var recognition = new webkitSpeechRecognition();
@@ -72,17 +71,6 @@ if ('webkitSpeechRecognition' in window) {
             window.open("chrome-extension://" + chrome.runtime.id + "/errorCatching.html");
             ignore_onend = true;
         }
-    };
-    recognition.onend = function () {
-        recognizing = false;
-        if (ignore_onend) {
-            return;
-        }
-        if (!final_transcript) {
-            return;
-        }
-        navigateChrome(final_transcript);
-        final_transcript = '';
     };
     recognition.onresult = function (event) {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
@@ -107,7 +95,15 @@ if ('webkitSpeechRecognition' in window) {
                 });
                 final_transcript = spaceWordArray.join(' ');
                 final_transcript += ' ' + noSpaceWordArray.join('');
-                navigateChrome(final_transcript);
+                final_transcript = final_transcript.trim();
+                if (final_transcript == 'okay chrome' || final_transcript == 'ok chrome') {
+                    run = true;
+                } else if (final_transcript == 'goodbye chrome') {
+                    run = false;
+                }
+                if (run) {
+                    navigateChrome(final_transcript);
+                }
             } else {
                 interim_transcript += event.results[i][0].transcript;
             }
