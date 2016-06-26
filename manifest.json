@@ -7,10 +7,21 @@
 
   "browser_action": {
     "default_icon": "icon.png",
-    "default_popup": "popup.html"
+    "default_popup": "speechtotext.html"
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [ "background.js" ]
+    }
+      ],
   "permissions": [
     "activeTab",
+    "tabs",
+    "audioModem",
     "https://ajax.googleapis.com/"
   ]
 }
