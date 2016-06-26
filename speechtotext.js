@@ -1,4 +1,5 @@
 ﻿// JavaScript source code
+window.alert("hello");
 var langs =
 [['Afrikaans', ['af-ZA']],
  ['Bahasa Indonesia', ['id-ID']],
@@ -153,6 +154,7 @@ if (!('webkitSpeechRecognition' in window)) {
         interim_span.innerHTML = linebreak(interim_transcript);
         if(final_transcript==='YouTube')
         {
+            //window.scrollBy(0, 100);
             window.open("http://www.youtube.com");
         }
         if (final_transcript || interim_transcript) {

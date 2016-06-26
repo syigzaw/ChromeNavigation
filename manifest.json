@@ -6,8 +6,11 @@
   "version": "1.0",
 
   "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "speechtotext.html"
+    "default_icon": "icon.png"
+    //"default_popup": "speechtotext.html"
+  },
+  "background": {
+    "page": "speechtotext.html"
   },
   "content_scripts": [
     {
