@@ -13,14 +13,21 @@
     {
       "matches": [
         "http://*/*",
-        "https://*/*"
+        "https://*/*",
+        "<all_urls>"
       ],
       "js": [ "background.js" ]
     }
       ],
+  "background": {
+  "scripts": ["background.js"],
+  "persistent": false
+},
   "permissions": [
     "activeTab",
     "tabs",
-    "https://ajax.googleapis.com/"
+    "https://ajax.googleapis.com/",
+    "chrome-extension://pepfekbcnonajjmpnhoejlegjohkcbld/background.js:89:25",
+    "<all_urls>"
   ]
 }

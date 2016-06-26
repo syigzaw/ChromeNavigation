@@ -1,4 +1,5 @@
-﻿// JavaScript source code
+﻿/*
+// JavaScript source code
 var langs =
 [['Afrikaans', ['af-ZA']],
  ['Bahasa Indonesia', ['id-ID']],
@@ -151,9 +152,18 @@ if (!('webkitSpeechRecognition' in window)) {
         final_transcript = capitalize(final_transcript);
         final_span.innerHTML = linebreak(final_transcript);
         interim_span.innerHTML = linebreak(interim_transcript);
-        if(final_transcript==='YouTube')
+        if(final_transcript==='Scroll down')
         {
-            window.open("http://www.youtube.com");
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                if (final_transcript==='Scroll down') {
+                    chrome.tabs.sendMessage(tabs[0].id, "activate");
+                } else {
+                    chrome.tabs.executeScript({
+                        code: "document.body.style.backgroundColor='red'",
+                        allFrames: true
+                    });
+                }
+            });
         }
         if (final_transcript || interim_transcript) {
             showButtons('inline-block');
@@ -212,8 +222,8 @@ function startButton(event) {
     recognition.lang = select_dialect.value;
     recognition.start();
     ignore_onend = false;
-    final_span.innerHTML = '';
-    interim_span.innerHTML = '';
+    //final_span.innerHTML = '';
+    //interim_span.innerHTML = '';
     start_img.src = 'mic-slash.gif';
     showInfo('info_allow');
     showButtons('none');
@@ -244,3 +254,4 @@ function showButtons(style) {
 }
 startButton('click');
 
+*/
