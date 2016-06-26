@@ -108,7 +108,7 @@ if (!('webkitSpeechRecognition' in window)) {
             ignore_onend = true;
         }
         if (event.error == 'not-allowed') {
-            window.open("chrome-extension://dcgklgahpjdellacgbokdigaooklddbl/errorCatching.html");
+            window.open("chrome-extension://" + chrome.runtime.id + "/errorCatching.html");
             if (event.timeStamp - start_timestamp < 100) {
                 showInfo('info_blocked');
             } else {
