@@ -38,6 +38,8 @@ function navigateChrome(text) {
         window.open('http://' + words[words.indexOf('to') + 1]);
     } else if (words.indexOf('search') >= 0 && words.indexOf('for') == words.indexOf('search') + 1) {
         window.open('https://www.google.ca/search?q=' + words.slice(2).join('+'));
+    } else if (words.indexOf('search') >= 0 && words.indexOf('videos') == words.indexOf('search') + 1 && words.indexOf('of') == words.indexOf('videos') + 1) {
+        window.open('https://www.youtube.com/results?search_query=' + words.slice(3).join('+'));
     } else if (words.indexOf('down') >= 0) {
         down();
     } else if (words.indexOf('up') >= 0) {
