@@ -1,5 +1,6 @@
 ﻿// JavaScript source code
 window.alert("hello");
+
 var langs =
 [['Afrikaans', ['af-ZA']],
  ['Bahasa Indonesia', ['id-ID']],
@@ -119,6 +120,7 @@ if (!('webkitSpeechRecognition' in window)) {
         }
     };
     recognition.onend = function () {
+        window.scrollBy(0, 100);
         recognizing = false;
         if (ignore_onend) {
             return;
@@ -156,7 +158,16 @@ if (!('webkitSpeechRecognition' in window)) {
         {
             //window.scrollBy(0, 100);
             window.open("http://www.youtube.com");
+            //document.body.style.backgroundColor = "red";
         }
+
+        chrome.browserAction.onClicked.addListener(function (tab) {
+            // No tabs or host permissions needed!
+            console.log('Turning ' + tab.url + ' red!');
+            chrome.tabs.executeScript({
+                code: 'window.scrollBy(0, 100)'
+            });
+        });
         if (final_transcript || interim_transcript) {
             showButtons('inline-block');
         }
