@@ -47,11 +47,7 @@ function navigateChrome(text) {
     }
     else if(words.indexOf('close')>=0){
         chrome.tabs.getSelected(null, function(tab){
-            //DO WHATEVER YOU WANT BETWEEN HERE,
             chrome.tabs.remove(tab.id);
-            /*var id=tab.id;
-            alert(tab.id);*/
-            //AND HERE.
         });
     }
 }
