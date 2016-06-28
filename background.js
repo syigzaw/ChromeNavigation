@@ -45,6 +45,15 @@ function navigateChrome(text) {
     } else if (words.indexOf('up') >= 0) {
         up();
     }
+    else if(words.indexOf('close')>=0){
+        chrome.tabs.getSelected(null, function(tab){
+            //DO WHATEVER YOU WANT BETWEEN HERE,
+            chrome.tabs.remove(tab.id);
+            /*var id=tab.id;
+            alert(tab.id);*/
+            //AND HERE.
+        });
+    }
 }
 
 function down() {
@@ -74,6 +83,17 @@ if ('webkitSpeechRecognition' in window) {
             ignore_onend = true;
         }
     };
+    recognition.onend = function () {
+        recognizing = false;
+        if (ignore_onend) {
+            return;
+        }
+        if (!final_transcript) {
+            return;
+        }
+        navigateChrome(final_transcript);
+        final_transcript = '';
+    };
     recognition.onresult = function (event) {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
             if (event.results[i].isFinal) {
@@ -98,19 +118,20 @@ if ('webkitSpeechRecognition' in window) {
                 final_transcript = spaceWordArray.join(' ');
                 final_transcript += ' ' + noSpaceWordArray.join('');
                 final_transcript = final_transcript.trim();
-                if (run) {
+                //if (run) {
                     navigateChrome(final_transcript);
-                }
+               /* }
                 if (final_transcript == 'okay chrome' || final_transcript == 'ok chrome') {
                     run = true;
-                    alert("It's on!");
+                    //alert("It's on!");
                 } else if (final_transcript == 'goodbye chrome') {
                     run = false;
-                    alert("It's off!");
-                }
-            } else {
-                interim_transcript += event.results[i][0].transcript;
+                   // alert("It's off!");
+                }*/
             }
+           /* else {
+                interim_transcript += event.results[i][0].transcript;
+            }*/
         }
         interim_transcript = interim_transcript.toLowerCase().trim();
         console.log(1, final_transcript, 2, interim_transcript);
