@@ -57,8 +57,23 @@ function navigateChrome(text) {
     if(words.indexOf('switch'>=0)){
         switchTab_left();
     }
+    if (words.indexOf('reload' >= 0)) {
+        refreshTab();
+    }
 }
 
+function refreshTab() {
+    window.alert(6);
+    chrome.windows.getLastFocused(
+        { populate: true },
+        function (window) {
+            for (var i = 0; i < window.tabs.length; i++) {
+                if (window.tabs[i].active) {
+                    chrome.tabs.reload(window.tabs[i].id, { active: true });
+                }
+            }
+        });
+}
 function switchTab_left(){
     chrome.windows.getLastFocused(
         {populate: true},
