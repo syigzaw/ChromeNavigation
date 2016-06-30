@@ -51,57 +51,25 @@ function navigateChrome(text) {
             chrome.tabs.remove(tab.id);
         });
     }
-    if(words.indexOf('right'>=0)){
-        switchTab_right();
-    }
-    if(words.indexOf('switch'>=0)){
-        switchTab_left();
-    }
-    if (words.indexOf('reload' >= 0)) {
-        refreshTab();
-    }
-}
-
-function refreshTab() {
-    window.alert(6);
-    chrome.windows.getLastFocused(
-        { populate: true },
-        function (window) {
-            for (var i = 0; i < window.tabs.length; i++) {
-                if (window.tabs[i].active) {
-                    chrome.tabs.reload(window.tabs[i].id, { active: true });
-                }
-            }
+    else if (words.indexOf('right') >= 0) {
+        chrome.tabs.getSelected(null, function (tab) {
+            chrome.tabs.query({}, function (tabs) {
+                chrome.tabs.update(tabs[tab.index + 1].id, { active: true });
+            });
         });
-}
-function switchTab_left(){
-    chrome.windows.getLastFocused(
-        {populate: true},
-        function (window)
-        {
-            for(var i=0; i<window.tabs.length; i++)
-            {
-                if(window.tabs[i].active)
-                {
-                    chrome.tabs.update(window.tabs[i-1].id, {active: true});
-                }
-            }
+    }
+    else if (words.indexOf('left') >= 0) {
+        chrome.tabs.getSelected(null, function (tab) {
+            chrome.tabs.query({}, function (tabs) {
+                chrome.tabs.update(tabs[tab.index - 1].id, { active: true });
+            });
         });
-}
-
-function switchTab_right(){
-    chrome.windows.getLastFocused(
-        {populate: true},
-        function (window)
-        {
-            for(var i=0; i<window.tabs.length; i++)
-            {
-                if(window.tabs[i].active)
-                {
-                    chrome.tabs.update(window.tabs[i+1].id, {active: true});
-                }
-            }
+    }
+    else if (words.indexOf('refresh') >= 0) {
+        chrome.tabs.getSelected(null, function (tab) {
+            chrome.tabs.reload(tab.id);
         });
+    }
 }
 
 function down() {
