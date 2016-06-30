@@ -28,6 +28,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
 
 var final_transcript = '';
 var interim_transcript = '';
+var currentTab;
 var recognizing = false;
 var ignore_onend;
 var run = false;
@@ -45,11 +46,47 @@ function navigateChrome(text) {
     } else if (words.indexOf('up') >= 0) {
         up();
     }
-    else if(words.indexOf('close')>=0){
+    else if(words.indexOf('exit')>=0){
         chrome.tabs.getSelected(null, function(tab){
             chrome.tabs.remove(tab.id);
         });
     }
+    if(words.indexOf('right'>=0)){
+        switchTab_right();
+    }
+    if(words.indexOf('switch'>=0)){
+        switchTab_left();
+    }
+}
+
+function switchTab_left(){
+    chrome.windows.getLastFocused(
+        {populate: true},
+        function (window)
+        {
+            for(var i=0; i<window.tabs.length; i++)
+            {
+                if(window.tabs[i].active)
+                {
+                    chrome.tabs.update(window.tabs[i-3].id, {active: true});
+                }
+            }
+        });
+}
+
+function switchTab_right(){
+    chrome.windows.getLastFocused(
+        {populate: true},
+        function (window)
+        {
+            for(var i=0; i<window.tabs.length; i++)
+            {
+                if(window.tabs[i].active)
+                {
+                    chrome.tabs.update(window.tabs[i+1].id, {active: true});
+                }
+            }
+        });
 }
 
 function down() {
