@@ -68,7 +68,7 @@ function switchTab_left(){
             {
                 if(window.tabs[i].active)
                 {
-                    chrome.tabs.update(window.tabs[i-3].id, {active: true});
+                    chrome.tabs.update(window.tabs[i-1].id, {active: true});
                 }
             }
         });
