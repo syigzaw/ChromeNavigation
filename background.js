@@ -47,29 +47,63 @@ function navigateChrome(text) {
         up();
     }
     else if(words.indexOf('exit')>=0){
-        chrome.tabs.getSelected(null, function(tab){
-            chrome.tabs.remove(tab.id);
-        });
+        exit();
     }
     else if (words.indexOf('right') >= 0) {
-        chrome.tabs.getSelected(null, function (tab) {
-            chrome.tabs.query({}, function (tabs) {
-                chrome.tabs.update(tabs[tab.index + 1].id, { active: true });
-            });
-        });
+        switchRight();
     }
-    else if (words.indexOf('left') >= 0) {
-        chrome.tabs.getSelected(null, function (tab) {
-            chrome.tabs.query({}, function (tabs) {
-                chrome.tabs.update(tabs[tab.index - 1].id, { active: true });
-            });
-        });
+    else if (words.indexOf('left') >=0 || words.indexOf('loft')  >= 0) {
+        switchLeft();
     }
     else if (words.indexOf('refresh') >= 0) {
-        chrome.tabs.getSelected(null, function (tab) {
-            chrome.tabs.reload(tab.id);
+        refresh();
+    }
+    else if(words.indexOf('switch')>=0){
+        chrome.tabs.getAllInWindow(null,function(tabs){
+            for(var i=0; i<tabs.length; i++){
+                var name = tabs[i].title.split(' ');
+                name = name[0];
+                if(name.toLowerCase() === words[1]){
+                    chrome.tabs.query({}, function (tabs) {
+                        chrome.tabs.update(tabs[i].id, { active: true });
+                    });
+                    break;
+                }
+            }
         });
     }
+}
+
+function switchByTabName(){
+
+}
+
+function exit(){
+    chrome.tabs.getSelected(null, function(tab){
+        chrome.tabs.remove(tab.id);
+    });
+}
+
+function refresh(){
+    chrome.tabs.getSelected(null, function (tab) {
+        chrome.tabs.reload(tab.id);
+    });
+}
+
+function switchRight(){
+    chrome.tabs.getSelected(null, function (tab) {
+        chrome.tabs.query({}, function (tabs) {
+            chrome.tabs.update(tabs[tab.index + 1].id, { active: true });
+        });
+    });
+}
+
+function switchLeft(){
+    chrome.tabs.getSelected(null, function (tab) {
+        chrome.tabs.query({}, function (tabs) {
+            chrome.tabs.update(tabs[tab.index - 1].id, { active: true });
+        });
+    });
 }
 
 function down() {
@@ -80,7 +114,8 @@ function up() {
     window.scrollBy(0,-500);
 }
 
-if ('webkitSpeechRecognition' in window) {
+//thinking there is no need for this if statement
+if (true) {
     var recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
